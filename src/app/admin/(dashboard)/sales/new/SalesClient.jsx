@@ -103,40 +103,40 @@ export default function SalesClient({ initialProducts, initialCustomers }) {
   return (
     <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-8rem)]">
       {/* Left: Product Selection */}
-      <div className="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">Pilih Produk</h2>
+      <div className="flex-1 flex flex-col brutal-card overflow-hidden">
+        <div className="p-4 border-b-2 border-black bg-blue-300">
+          <h2 className="text-xl font-black text-black uppercase mb-4 border-b-2 border-black pb-1 inline-block">Pilih Produk</h2>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-black" size={20} strokeWidth={3} />
             <input 
               type="text" 
               placeholder="Cari produk (Nama, SKU, atau Barcode)..." 
-              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+              className="brutal-input pl-10 bg-white"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 bg-gray-100">
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredProducts.map((product) => (
               <div 
                 key={product.id} 
                 onClick={() => addToCart(product)}
-                className={`bg-white border rounded-xl p-4 cursor-pointer transition flex flex-col ${product.stock > 0 ? 'border-gray-200 hover:border-blue-500 hover:shadow-md group' : 'border-red-100 opacity-60 cursor-not-allowed'}`}
+                className={`brutal-card p-4 cursor-pointer transition-all flex flex-col ${product.stock > 0 ? 'hover:bg-yellow-300 hover:-translate-y-1 hover:shadow-brutal-lg' : 'opacity-60 cursor-not-allowed bg-gray-200'}`}
               >
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-800 group-hover:text-blue-600 transition leading-tight mb-1">{product.name}</h3>
-                  <p className={`text-xs mb-3 ${product.stock > 0 ? 'text-gray-500' : 'text-red-500 font-bold'}`}>
+                  <h3 className="font-black text-black leading-tight mb-1">{product.name}</h3>
+                  <p className={`text-xs mb-3 font-bold ${product.stock > 0 ? 'text-black' : 'text-red-600'}`}>
                     Stok: {product.stock} {product.unit}
                   </p>
                 </div>
-                <div className="flex justify-between items-center mt-auto pt-3 border-t border-gray-100">
-                  <p className="font-bold text-gray-900">Rp {product.sellingPrice.toLocaleString('id-ID')}</p>
+                <div className="flex justify-between items-center mt-auto pt-3 border-t-2 border-black">
+                  <p className="font-black text-black">Rp {product.sellingPrice.toLocaleString('id-ID')}</p>
                   {product.stock > 0 && (
-                    <button className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition">
-                      <Plus size={16} />
+                    <button className="w-8 h-8 brutal-border brutal-shadow-sm bg-white flex items-center justify-center hover:bg-green-400 transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none text-black">
+                      <Plus size={20} strokeWidth={3} />
                     </button>
                   )}
                 </div>
@@ -147,59 +147,61 @@ export default function SalesClient({ initialProducts, initialCustomers }) {
       </div>
 
       {/* Right: Cart & Checkout */}
-      <div className="w-full lg:w-[450px] flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-gray-800 flex items-center">
-            <ShoppingBag className="mr-2 text-blue-600" size={20} />
+      <div className="w-full lg:w-[450px] flex flex-col brutal-card overflow-hidden">
+        <div className="p-4 border-b-2 border-black bg-green-300 flex items-center justify-between">
+          <h2 className="text-xl font-black text-black uppercase flex items-center">
+            <ShoppingBag className="mr-2 text-black" size={24} strokeWidth={2.5} />
             Keranjang
           </h2>
-          <span className="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-full">
+          <span className="bg-white border-2 border-black shadow-brutal-sm text-black text-xs font-black px-2.5 py-1">
             {cart.length} Item
           </span>
         </div>
 
         {/* Cart Items List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[200px]">
+        <div className="flex-1 overflow-y-auto p-4 bg-gray-50 min-h-[200px]">
           {cart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-400 mt-10">
-              <ShoppingBag size={48} className="mb-4 opacity-20" />
-              <p>Keranjang masih kosong</p>
+            <div className="h-full flex flex-col items-center justify-center text-black mt-10">
+              <ShoppingBag size={48} strokeWidth={2} className="mb-4 opacity-50" />
+              <p className="font-bold">Keranjang masih kosong</p>
             </div>
           ) : (
-            cart.map((item) => (
-              <div key={item.id} className="flex items-center justify-between p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-800 text-sm line-clamp-1">{item.name}</h4>
-                  <p className="text-blue-600 font-medium text-sm">Rp {(item.price * item.qty).toLocaleString('id-ID')}</p>
+            <div className="space-y-3">
+            {cart.map((item) => (
+              <div key={item.id} className="flex items-center justify-between p-3 brutal-border brutal-shadow-sm bg-white">
+                <div className="flex-1 pr-2">
+                  <h4 className="font-black text-black text-sm line-clamp-1">{item.name}</h4>
+                  <p className="text-black font-bold text-sm">Rp {(item.price * item.qty).toLocaleString('id-ID')}</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button onClick={() => updateQty(item.id, -1)} className="w-7 h-7 flex items-center justify-center rounded bg-gray-200 text-gray-700 hover:bg-gray-300">
-                    <Minus size={14} />
+                  <button onClick={() => updateQty(item.id, -1)} className="w-7 h-7 flex items-center justify-center bg-white brutal-btn hover:bg-yellow-300 p-0 text-black">
+                    <Minus size={16} strokeWidth={3} />
                   </button>
-                  <span className="w-6 text-center font-semibold text-sm">{item.qty}</span>
-                  <button onClick={() => updateQty(item.id, 1)} className="w-7 h-7 flex items-center justify-center rounded bg-gray-200 text-gray-700 hover:bg-gray-300">
-                    <Plus size={14} />
+                  <span className="w-6 text-center font-black text-sm">{item.qty}</span>
+                  <button onClick={() => updateQty(item.id, 1)} className="w-7 h-7 flex items-center justify-center bg-white brutal-btn hover:bg-yellow-300 p-0 text-black">
+                    <Plus size={16} strokeWidth={3} />
                   </button>
-                  <button onClick={() => removeFromCart(item.id)} className="w-7 h-7 flex items-center justify-center rounded bg-red-50 text-red-500 hover:bg-red-100 ml-1">
-                    <Trash2 size={14} />
+                  <button onClick={() => removeFromCart(item.id)} className="w-7 h-7 flex items-center justify-center bg-white brutal-btn hover:bg-red-400 ml-1 p-0 text-black">
+                    <Trash2 size={16} strokeWidth={3} />
                   </button>
                 </div>
               </div>
-            ))
+            ))}
+            </div>
           )}
         </div>
 
         {/* Checkout Options */}
-        <div className="p-4 border-t border-gray-100 space-y-4 overflow-y-auto">
+        <div className="p-4 border-t-2 border-black space-y-4 overflow-y-auto bg-[#f8f9fa]">
           {/* Customer Selection */}
           <div>
-            <label className="text-xs font-medium text-gray-500 mb-1 flex items-center">
-              <UserRound size={14} className="mr-1" /> Pelanggan {paymentMethod === "KREDIT" && <span className="text-red-500 ml-1">* Wajib</span>}
+            <label className="text-xs font-black text-black uppercase mb-1 flex items-center">
+              <UserRound size={16} className="mr-1" strokeWidth={3} /> Pelanggan {paymentMethod === "KREDIT" && <span className="text-red-600 ml-1 bg-red-100 px-1 border border-black">* Wajib</span>}
             </label>
             <select 
               value={customerId} 
               onChange={(e) => setCustomerId(e.target.value)}
-              className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              className="brutal-input bg-white cursor-pointer"
             >
               <option value="">-- Pilih Pelanggan (Umum) --</option>
               {initialCustomers.map(c => (
@@ -210,83 +212,83 @@ export default function SalesClient({ initialProducts, initialCustomers }) {
 
           {/* Payment Methods */}
           <div>
-            <label className="text-xs font-medium text-gray-500 mb-1 flex items-center">
-              <CreditCard size={14} className="mr-1" /> Pembayaran
+            <label className="text-xs font-black text-black uppercase mb-1 flex items-center">
+              <CreditCard size={16} className="mr-1" strokeWidth={3} /> Pembayaran
             </label>
             <div className="grid grid-cols-3 gap-2">
               <button 
                 onClick={() => { setPaymentMethod("CASH"); setPaidInput(""); }}
-                className={`py-2 px-2 flex flex-col items-center justify-center rounded-lg border font-medium text-xs transition ${
-                  paymentMethod === "CASH" ? "bg-blue-50 border-blue-600 text-blue-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                className={`py-2 px-2 flex flex-col items-center justify-center brutal-border brutal-shadow-sm font-black text-xs transition-all ${
+                  paymentMethod === "CASH" ? "bg-pink-300 translate-x-[2px] translate-y-[2px] shadow-none" : "bg-white hover:bg-pink-100 text-black"
                 }`}
               >
-                <Banknote size={18} className="mb-1" /> Tunai
+                <Banknote size={20} className="mb-1" /> Tunai
               </button>
               <button 
                 onClick={() => { setPaymentMethod("QRIS"); setPaidInput(""); }}
-                className={`py-2 px-2 flex flex-col items-center justify-center rounded-lg border font-medium text-xs transition ${
-                  paymentMethod === "QRIS" ? "bg-blue-50 border-blue-600 text-blue-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                className={`py-2 px-2 flex flex-col items-center justify-center brutal-border brutal-shadow-sm font-black text-xs transition-all ${
+                  paymentMethod === "QRIS" ? "bg-cyan-300 translate-x-[2px] translate-y-[2px] shadow-none" : "bg-white hover:bg-cyan-100 text-black"
                 }`}
               >
-                <CreditCard size={18} className="mb-1" /> QRIS
+                <CreditCard size={20} className="mb-1" /> QRIS
               </button>
               <button 
                 onClick={() => { setPaymentMethod("KREDIT"); setPaidInput(""); }}
-                className={`py-2 px-2 flex flex-col items-center justify-center rounded-lg border font-medium text-xs transition ${
-                  paymentMethod === "KREDIT" ? "bg-red-50 border-red-600 text-red-700" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                className={`py-2 px-2 flex flex-col items-center justify-center brutal-border brutal-shadow-sm font-black text-xs transition-all ${
+                  paymentMethod === "KREDIT" ? "bg-orange-300 translate-x-[2px] translate-y-[2px] shadow-none" : "bg-white hover:bg-orange-100 text-black"
                 }`}
               >
-                <UserRound size={18} className="mb-1" /> Kasbon
+                <UserRound size={20} className="mb-1" /> Kasbon
               </button>
             </div>
           </div>
 
           {/* Discount & Calculations */}
-          <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 space-y-2">
+          <div className="bg-white p-3 brutal-border brutal-shadow-sm space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-500">Subtotal</span>
-              <span className="text-sm font-medium">Rp {subtotal.toLocaleString('id-ID')}</span>
+              <span className="text-sm font-black text-black">Subtotal</span>
+              <span className="text-sm font-black text-black">Rp {subtotal.toLocaleString('id-ID')}</span>
             </div>
             
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-500 flex items-center">
-                <Tag size={12} className="mr-1" /> Diskon (Rp)
+              <span className="text-sm font-black text-black flex items-center">
+                <Tag size={14} className="mr-1" strokeWidth={3} /> Diskon (Rp)
               </span>
               <input 
                 type="number" 
                 value={discountInput}
                 onChange={(e) => setDiscountInput(e.target.value)}
                 placeholder="0"
-                className="w-24 p-1 text-right text-sm border border-gray-300 rounded focus:border-blue-500 outline-none"
+                className="brutal-input w-28 text-right py-1 px-2"
               />
             </div>
             
             {paymentMethod !== "KREDIT" && (
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500 flex items-center">
-                  <Calculator size={12} className="mr-1" /> Uang Dibayar
+                <span className="text-sm font-black text-black flex items-center">
+                  <Calculator size={14} className="mr-1" strokeWidth={3} /> Uang Dibayar
                 </span>
                 <input 
                   type="number" 
                   value={paidInput}
                   onChange={(e) => setPaidInput(e.target.value)}
                   placeholder="0"
-                  className="w-32 p-1 text-right font-medium text-sm border border-gray-300 rounded focus:border-blue-500 outline-none"
+                  className="brutal-input w-36 text-right py-1 px-2 font-black text-base"
                 />
               </div>
             )}
             
-            <hr className="border-gray-200 my-2" />
+            <hr className="border-t-2 border-black my-2" />
             
-            <div className="flex justify-between items-end">
-              <span className="text-sm font-bold text-gray-800">Total Akhir</span>
-              <span className="text-xl font-bold text-blue-700">Rp {total.toLocaleString('id-ID')}</span>
+            <div className="flex justify-between items-end pt-1">
+              <span className="text-sm font-black text-black uppercase">Total Akhir</span>
+              <span className="text-2xl font-black text-black bg-yellow-300 px-2 py-1 brutal-border">Rp {total.toLocaleString('id-ID')}</span>
             </div>
 
             {paymentMethod !== "KREDIT" && (
-              <div className="flex justify-between items-center pt-1">
-                <span className="text-xs font-medium text-gray-500">Kembalian</span>
-                <span className={`text-sm font-bold ${change > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+              <div className="flex justify-between items-center pt-2 mt-1">
+                <span className="text-xs font-black text-black uppercase">Kembalian</span>
+                <span className={`text-base font-black px-2 py-0.5 border-2 border-black ${change > 0 ? 'bg-green-300 text-black' : 'bg-gray-200 text-black'}`}>
                   Rp {change.toLocaleString('id-ID')}
                 </span>
               </div>
@@ -297,7 +299,7 @@ export default function SalesClient({ initialProducts, initialCustomers }) {
           <button 
             onClick={handleCheckout}
             disabled={!isValidCheckout() || loading}
-            className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition shadow-lg shadow-blue-200 disabled:opacity-50 disabled:shadow-none flex items-center justify-center mt-2"
+            className="w-full py-4 bg-blue-400 brutal-btn font-black text-lg flex items-center justify-center mt-2 uppercase tracking-wide"
           >
             {loading ? "Memproses..." : "Proses Transaksi"}
           </button>

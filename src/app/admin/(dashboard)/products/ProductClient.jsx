@@ -105,30 +105,30 @@ export default function ProductClient({ initialProducts, categories }) {
   return (
     <div className="space-y-6 relative">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl font-bold text-gray-800">Daftar Produk</h1>
+        <h1 className="text-3xl font-black text-black uppercase">Daftar Produk</h1>
         <button 
           onClick={openAddModal}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-sm"
+          className="flex items-center px-4 py-2 bg-blue-400 brutal-btn"
         >
-          <Plus size={18} className="mr-2" />
+          <Plus size={20} className="mr-2" strokeWidth={3} />
           Tambah Produk
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row gap-4 justify-between">
+      <div className="brutal-card overflow-hidden">
+        <div className="p-4 border-b-2 border-black flex flex-col sm:flex-row gap-4 justify-between bg-yellow-300">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-black" size={20} strokeWidth={3} />
             <input 
               type="text" 
               placeholder="Cari nama atau SKU produk..." 
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+              className="brutal-input pl-10 bg-white"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <select 
-            className="px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+            className="brutal-input sm:max-w-xs bg-white cursor-pointer"
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
           >
@@ -140,8 +140,8 @@ export default function ProductClient({ initialProducts, categories }) {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-600">
-            <thead className="bg-gray-50 text-gray-700 font-medium">
+          <table className="w-full text-left text-sm text-black">
+            <thead className="bg-white border-b-2 border-black uppercase font-black">
               <tr>
                 <th className="px-6 py-4">SKU</th>
                 <th className="px-6 py-4">Nama Produk</th>
@@ -152,19 +152,19 @@ export default function ProductClient({ initialProducts, categories }) {
                 <th className="px-6 py-4 text-right">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y-2 divide-black">
               {filteredProducts.length === 0 ? (
-                <tr><td colSpan={7} className="text-center py-8 text-gray-500">Tidak ada data produk</td></tr>
+                <tr><td colSpan={7} className="text-center py-8 font-bold text-black">Tidak ada data produk</td></tr>
               ) : filteredProducts.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 text-gray-500 font-mono text-xs">{item.sku || "-"}</td>
-                  <td className="px-6 py-4 font-medium text-gray-900">{item.name}</td>
-                  <td className="px-6 py-4">{item.category?.name}</td>
-                  <td className="px-6 py-4">Rp {item.purchasePrice.toLocaleString('id-ID')}</td>
-                  <td className="px-6 py-4">Rp {item.sellingPrice.toLocaleString('id-ID')}</td>
+                <tr key={item.id} className="hover:bg-gray-100 transition-colors bg-white">
+                  <td className="px-6 py-4 font-mono font-bold text-black">{item.sku || "-"}</td>
+                  <td className="px-6 py-4 font-black text-black">{item.name}</td>
+                  <td className="px-6 py-4 font-bold text-black">{item.category?.name}</td>
+                  <td className="px-6 py-4 font-bold text-black">Rp {item.purchasePrice.toLocaleString('id-ID')}</td>
+                  <td className="px-6 py-4 font-bold text-black">Rp {item.sellingPrice.toLocaleString('id-ID')}</td>
                   <td className="px-6 py-4">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                      item.stock > item.minimumStock ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                    <span className={`px-2.5 py-1 text-xs font-black border-2 border-black shadow-brutal-sm ${
+                      item.stock > item.minimumStock ? 'bg-green-300 text-black' : 'bg-red-400 text-black'
                     }`}>
                       {item.stock} {item.unit}
                     </span>
@@ -172,15 +172,15 @@ export default function ProductClient({ initialProducts, categories }) {
                   <td className="px-6 py-4 text-right space-x-3">
                     <button 
                       onClick={() => openEditModal(item)}
-                      className="text-blue-600 hover:text-blue-800 transition bg-blue-50 p-1.5 rounded-md hover:bg-blue-100"
+                      className="p-2 bg-white hover:bg-blue-300 brutal-border brutal-shadow-sm transition-all hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
                     >
-                      <Edit2 size={16} />
+                      <Edit2 size={18} strokeWidth={2.5} />
                     </button>
                     <button 
                       onClick={() => handleDelete(item.id)}
-                      className="text-red-500 hover:text-red-700 transition bg-red-50 p-1.5 rounded-md hover:bg-red-100"
+                      className="p-2 bg-white hover:bg-red-400 brutal-border brutal-shadow-sm transition-all hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={18} strokeWidth={2.5} />
                     </button>
                   </td>
                 </tr>
@@ -192,39 +192,39 @@ export default function ProductClient({ initialProducts, categories }) {
 
       {/* Modal CRUD */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex justify-between items-center p-5 border-b border-gray-100">
-              <h2 className="text-xl font-bold text-gray-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="brutal-card w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center p-5 border-b-2 border-black bg-pink-300">
+              <h2 className="text-2xl font-black text-black uppercase">
                 {isEditing ? "Edit Produk" : "Tambah Produk Baru"}
               </h2>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 transition"
+                className="text-black bg-white brutal-border brutal-shadow-sm p-1 hover:bg-red-400 transition-all"
               >
-                <X size={24} />
+                <X size={24} strokeWidth={3} />
               </button>
             </div>
             
-            <form onSubmit={handleSubmit} className="p-5">
+            <form onSubmit={handleSubmit} className="p-6 bg-white">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
                 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Nama Produk *</label>
+                  <label className="text-sm font-black text-black uppercase">Nama Produk *</label>
                   <input 
                     required
                     type="text" 
-                    className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                    className="brutal-input"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                   />
                 </div>
                 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Kategori *</label>
+                  <label className="text-sm font-black text-black uppercase">Kategori *</label>
                   <select 
                     required
-                    className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-white"
+                    className="brutal-input bg-white cursor-pointer"
                     value={formData.categoryId}
                     onChange={(e) => setFormData({...formData, categoryId: e.target.value})}
                   >
@@ -236,24 +236,24 @@ export default function ProductClient({ initialProducts, categories }) {
                 </div>
                 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Harga Beli (Modal) *</label>
+                  <label className="text-sm font-black text-black uppercase">Harga Beli (Modal) *</label>
                   <input 
                     required
                     type="number" 
                     min="0"
-                    className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                    className="brutal-input"
                     value={formData.purchasePrice}
                     onChange={(e) => setFormData({...formData, purchasePrice: e.target.value})}
                   />
                 </div>
                 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Harga Jual *</label>
+                  <label className="text-sm font-black text-black uppercase">Harga Jual *</label>
                   <input 
                     required
                     type="number" 
                     min="0"
-                    className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                    className="brutal-input"
                     value={formData.sellingPrice}
                     onChange={(e) => setFormData({...formData, sellingPrice: e.target.value})}
                   />
@@ -261,11 +261,11 @@ export default function ProductClient({ initialProducts, categories }) {
                 
                 {!isEditing && (
                   <div className="space-y-1">
-                    <label className="text-sm font-medium text-gray-700">Stok Awal</label>
+                    <label className="text-sm font-black text-black uppercase">Stok Awal</label>
                     <input 
                       type="number" 
                       min="0"
-                      className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                      className="brutal-input"
                       value={formData.stock}
                       onChange={(e) => setFormData({...formData, stock: e.target.value})}
                     />
@@ -273,31 +273,31 @@ export default function ProductClient({ initialProducts, categories }) {
                 )}
                 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Batas Minimum Stok</label>
+                  <label className="text-sm font-black text-black uppercase">Batas Minimum Stok</label>
                   <input 
                     type="number" 
                     min="0"
-                    className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                    className="brutal-input"
                     value={formData.minimumStock}
                     onChange={(e) => setFormData({...formData, minimumStock: e.target.value})}
                   />
                 </div>
                 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">SKU (Opsional)</label>
+                  <label className="text-sm font-black text-black uppercase">SKU (Opsional)</label>
                   <input 
                     type="text" 
                     placeholder="Contoh: KGP-01"
-                    className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm font-mono"
+                    className="brutal-input font-mono"
                     value={formData.sku}
                     onChange={(e) => setFormData({...formData, sku: e.target.value})}
                   />
                 </div>
                 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Unit Satuan</label>
+                  <label className="text-sm font-black text-black uppercase">Unit Satuan</label>
                   <select 
-                    className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-white"
+                    className="brutal-input bg-white cursor-pointer"
                     value={formData.unit}
                     onChange={(e) => setFormData({...formData, unit: e.target.value})}
                   >
@@ -312,11 +312,11 @@ export default function ProductClient({ initialProducts, categories }) {
                 
               </div>
               
-              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-100">
+              <div className="flex justify-end space-x-3 pt-6 border-t-2 border-black">
                 <button 
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
+                  className="px-6 py-2.5 bg-gray-200 brutal-btn hover:bg-gray-300"
                   disabled={loading}
                 >
                   Batal
@@ -324,7 +324,7 @@ export default function ProductClient({ initialProducts, categories }) {
                 <button 
                   type="submit"
                   disabled={loading}
-                  className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition shadow-sm disabled:opacity-50"
+                  className="px-6 py-2.5 bg-blue-400 brutal-btn hover:bg-blue-500 disabled:opacity-50"
                 >
                   {loading ? "Menyimpan..." : (isEditing ? "Simpan Perubahan" : "Tambah Produk")}
                 </button>

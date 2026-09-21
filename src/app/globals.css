@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fdfdfc; 
+  --foreground: #000000;
 }
 
 @theme inline {
@@ -10,17 +10,38 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  
+  --shadow-brutal: 4px 4px 0px 0px rgba(0,0,0,1);
+  --shadow-brutal-lg: 8px 8px 0px 0px rgba(0,0,0,1);
+  --shadow-brutal-sm: 2px 2px 0px 0px rgba(0,0,0,1);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .brutal-border {
+    @apply border-2 border-black rounded-md;
+  }
+  .brutal-shadow {
+    @apply shadow-brutal;
+  }
+  .brutal-shadow-lg {
+    @apply shadow-brutal-lg;
+  }
+  .brutal-shadow-sm {
+    @apply shadow-brutal-sm;
+  }
+  .brutal-btn {
+    @apply border-2 border-black shadow-brutal rounded-md font-bold transition-all hover:-translate-y-0.5 hover:shadow-brutal-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none text-black;
+  }
+  .brutal-card {
+    @apply bg-white border-2 border-black shadow-brutal-lg rounded-xl;
+  }
+  .brutal-input {
+    @apply w-full p-2.5 border-2 border-black rounded-md bg-white text-black outline-none focus:ring-0 focus:shadow-brutal transition-shadow;
+  }
 }

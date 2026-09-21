@@ -24,11 +24,11 @@ export default function DashboardClient({ initialData }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard & Analisis Keuangan</h1>
+        <h1 className="text-3xl font-black text-black uppercase">Dashboard & Analisis Keuangan</h1>
         <select 
           value={period}
           onChange={(e) => setPeriod(e.target.value)}
-          className="bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+          className="bg-yellow-300 brutal-border brutal-shadow-sm text-black py-2 px-4 focus:outline-none focus:ring-0 font-bold hover:shadow-brutal cursor-pointer transition-all"
         >
           <option value="today">Hari Ini</option>
           <option value="7d">7 Hari Terakhir</option>
@@ -42,98 +42,101 @@ export default function DashboardClient({ initialData }) {
         <SummaryCard 
           title={`Total Penjualan (${period})`} 
           value={`Rp ${data.totalOmzet.toLocaleString('id-ID')}`} 
-          icon={<DollarSign className="text-blue-600" size={24} />} 
+          icon={<DollarSign className="text-black" size={24} />} 
           trend={`Hari Ini: Rp ${todayOmzet.toLocaleString('id-ID')}`}
           trendPositive={todayOmzet > 0}
+          color="bg-green-400"
         />
         <SummaryCard 
           title="Laba Kotor" 
           value={`Rp ${data.labaKotor.toLocaleString('id-ID')}`} 
-          icon={<TrendingUp className="text-emerald-600" size={24} />} 
+          icon={<TrendingUp className="text-black" size={24} />} 
           trend={`Omzet - HPP`}
           trendPositive={data.labaKotor > 0}
+          color="bg-blue-400"
         />
         <SummaryCard 
           title="Pengeluaran" 
           value={`Rp ${data.totalExpense.toLocaleString('id-ID')}`} 
-          icon={<Receipt className="text-rose-600" size={24} />} 
+          icon={<Receipt className="text-black" size={24} />} 
+          color="bg-pink-400"
         />
         <SummaryCard 
           title="Estimasi Laba Bersih" 
           value={`Rp ${data.labaBersih.toLocaleString('id-ID')}`} 
-          icon={<Activity className={`size-24 ${data.labaBersih >= 0 ? 'text-blue-600' : 'text-rose-600'}`} size={24} />} 
+          icon={<Activity className="text-black" size={24} />} 
           trend={data.labaBersih >= 0 ? "Profit" : "Rugi"}
           trendPositive={data.labaBersih >= 0}
+          color="bg-yellow-400"
         />
       </div>
 
       {/* Secondary KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center">
-          <div className="p-3 bg-indigo-50 rounded-lg mr-4">
-            <ShoppingCart className="text-indigo-600" size={20} />
+        <div className="brutal-card p-4 flex items-center bg-purple-300 transition-all hover:translate-y-1 hover:shadow-brutal cursor-pointer">
+          <div className="p-3 bg-white brutal-border brutal-shadow-sm mr-4">
+            <ShoppingCart className="text-black" size={20} />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-500">Jumlah Transaksi</p>
-            <h3 className="text-xl font-bold text-gray-900">{data.totalTransactions}</h3>
+            <p className="text-xs font-black text-black uppercase">Jumlah Transaksi</p>
+            <h3 className="text-2xl font-black text-black">{data.totalTransactions}</h3>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center">
-          <div className="p-3 bg-orange-50 rounded-lg mr-4">
-            <Package className="text-orange-600" size={20} />
+        <div className="brutal-card p-4 flex items-center bg-orange-300 transition-all hover:translate-y-1 hover:shadow-brutal cursor-pointer">
+          <div className="p-3 bg-white brutal-border brutal-shadow-sm mr-4">
+            <Package className="text-black" size={20} />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-500">Barang Terjual</p>
-            <h3 className="text-xl font-bold text-gray-900">{data.totalItemsSold}</h3>
+            <p className="text-xs font-black text-black uppercase">Barang Terjual</p>
+            <h3 className="text-2xl font-black text-black">{data.totalItemsSold}</h3>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center">
-          <div className="p-3 bg-teal-50 rounded-lg mr-4">
-            <Activity className="text-teal-600" size={20} />
+        <div className="brutal-card p-4 flex items-center bg-cyan-300 transition-all hover:translate-y-1 hover:shadow-brutal cursor-pointer">
+          <div className="p-3 bg-white brutal-border brutal-shadow-sm mr-4">
+            <Activity className="text-black" size={20} />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-500">Rata-rata Transaksi</p>
-            <h3 className="text-xl font-bold text-gray-900">Rp {Math.round(data.averageTransaction).toLocaleString('id-ID')}</h3>
+            <p className="text-xs font-black text-black uppercase">Rata-rata Transaksi</p>
+            <h3 className="text-xl font-black text-black">Rp {Math.round(data.averageTransaction).toLocaleString('id-ID')}</h3>
           </div>
         </div>
       </div>
 
       {/* Charts & Lists */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-6">Grafik Penjualan 30 Hari Terakhir</h2>
+        <div className="xl:col-span-2 brutal-card p-6 bg-white">
+          <h2 className="text-xl font-black text-black uppercase mb-6 border-b-4 border-black pb-2 inline-block">Grafik Penjualan 30 Hari Terakhir</h2>
           <div className="h-[300px]">
             {mounted && (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e5e5" />
                   <XAxis 
                     dataKey="name" 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{fill: '#94a3b8', fontSize: 11}} 
+                    axisLine={{ stroke: '#000', strokeWidth: 2 }} 
+                    tickLine={{ stroke: '#000', strokeWidth: 2 }} 
+                    tick={{fill: '#000', fontSize: 12, fontWeight: 'bold'}} 
                     dy={10} 
                     minTickGap={15}
                   />
                   <YAxis 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{fill: '#94a3b8', fontSize: 11}} 
+                    axisLine={{ stroke: '#000', strokeWidth: 2 }} 
+                    tickLine={{ stroke: '#000', strokeWidth: 2 }} 
+                    tick={{fill: '#000', fontSize: 12, fontWeight: 'bold'}} 
                     dx={-10} 
                     tickFormatter={(value) => `Rp ${value / 1000}k`} 
                   />
                   <Tooltip 
                     formatter={(value) => [`Rp ${value.toLocaleString('id-ID')}`, 'Omzet']}
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    labelStyle={{ color: '#475569', fontWeight: 'bold', marginBottom: '4px' }}
+                    contentStyle={{ borderRadius: '0', border: '2px solid black', boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)', backgroundColor: '#fff', color: '#000', fontWeight: 'bold' }}
                   />
                   <Line 
-                    type="monotone" 
+                    type="step" 
                     dataKey="omzet" 
-                    stroke="#2563EB" 
-                    strokeWidth={3} 
+                    stroke="#000" 
+                    strokeWidth={4} 
                     dot={false}
-                    activeDot={{r: 6, fill: '#2563EB', strokeWidth: 2, stroke: '#fff'}} 
+                    activeDot={{r: 8, fill: '#ef4444', strokeWidth: 3, stroke: '#000'}} 
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -141,15 +144,15 @@ export default function DashboardClient({ initialData }) {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col">
-          <h2 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+        <div className="brutal-card p-6 flex flex-col bg-white">
+          <h2 className="text-xl font-black text-black uppercase mb-6 border-b-4 border-black pb-2 inline-block">
             Produk Terlaris
           </h2>
-          <div className="space-y-4 flex-1 overflow-y-auto">
+          <div className="space-y-4 flex-1 overflow-y-auto pr-2">
             {data.topProducts.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-gray-400">
-                <Package size={48} className="mb-3 opacity-20" />
-                <p className="text-sm">Belum ada data penjualan.</p>
+              <div className="h-full flex flex-col items-center justify-center text-black">
+                <Package size={48} className="mb-3 opacity-50" />
+                <p className="text-sm font-bold">Belum ada data penjualan.</p>
               </div>
             ) : (
               data.topProducts.map((p, idx) => (
@@ -163,21 +166,21 @@ export default function DashboardClient({ initialData }) {
   );
 }
 
-function SummaryCard({ title, value, icon, trend, trendPositive }) {
+function SummaryCard({ title, value, icon, trend, trendPositive, color = "bg-white" }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between hover:shadow-md transition">
+    <div className={`brutal-card p-5 flex flex-col justify-between ${color} transition-all hover:translate-y-1 hover:shadow-brutal`}>
       <div className="flex justify-between items-start mb-3">
         <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <h3 className="text-xl font-bold text-gray-900 mt-1">{value}</h3>
+          <p className="text-xs font-black uppercase text-black">{title}</p>
+          <h3 className="text-3xl font-black text-black mt-1">{value}</h3>
         </div>
-        <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
+        <div className="p-2 border-2 border-black bg-white rounded-md shadow-brutal-sm">
           {icon}
         </div>
       </div>
       {trend && (
-        <p className={`text-xs font-medium flex items-center ${trendPositive ? 'text-emerald-600' : 'text-rose-600'}`}>
-          {trendPositive ? <TrendingUp size={14} className="mr-1" /> : <TrendingDown size={14} className="mr-1" />}
+        <p className="text-xs font-black flex items-center p-1.5 border-2 border-black rounded-sm w-fit bg-white text-black mt-2">
+          {trendPositive ? <TrendingUp size={16} className="mr-1 text-green-600" /> : <TrendingDown size={16} className="mr-1 text-red-600" />}
           {trend}
         </p>
       )}
@@ -187,19 +190,19 @@ function SummaryCard({ title, value, icon, trend, trendPositive }) {
 
 function TopProductItem({ rank, name, qty }) {
   return (
-    <div className="flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition rounded-lg border border-gray-100">
+    <div className="flex items-center justify-between p-3 bg-white hover:bg-yellow-100 transition brutal-border brutal-shadow-sm cursor-pointer hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
       <div className="flex items-center space-x-3">
-        <span className={`w-7 h-7 flex items-center justify-center rounded-full text-xs font-bold shadow-sm ${
-          rank === 1 ? 'bg-amber-100 text-amber-700 border border-amber-200' : 
-          rank === 2 ? 'bg-gray-200 text-gray-700 border border-gray-300' : 
-          rank === 3 ? 'bg-orange-100 text-orange-700 border border-orange-200' : 
-          'bg-white text-gray-500 border border-gray-200'
+        <span className={`w-8 h-8 flex items-center justify-center rounded-sm text-sm font-black border-2 border-black shadow-brutal-sm ${
+          rank === 1 ? 'bg-yellow-400' : 
+          rank === 2 ? 'bg-gray-300' : 
+          rank === 3 ? 'bg-orange-400' : 
+          'bg-white'
         }`}>
           {rank}
         </span>
-        <span className="font-semibold text-gray-800 text-sm truncate max-w-[150px]">{name}</span>
+        <span className="font-black text-black text-sm truncate max-w-[130px]">{name}</span>
       </div>
-      <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">{qty} pcs</span>
+      <span className="text-xs font-black text-black bg-pink-300 px-2.5 py-1 brutal-border brutal-shadow-sm">{qty} pcs</span>
     </div>
   );
 }
