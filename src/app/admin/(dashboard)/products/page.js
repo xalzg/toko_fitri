@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import ProductClient from "./ProductClient";
 
@@ -17,3 +18,4 @@ export default async function ProductsPage() {
 
   return <ProductClient initialProducts={products} categories={categories} />;
 }
+

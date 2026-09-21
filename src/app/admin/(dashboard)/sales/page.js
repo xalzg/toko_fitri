@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import SalesHistoryClient from "./SalesHistoryClient";
 
@@ -16,3 +17,4 @@ export default async function SalesHistoryPage() {
 
   return <SalesHistoryClient initialTransactions={transactions} />;
 }
+

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import CategoryClient from "./CategoryClient";
 
@@ -13,3 +14,4 @@ export default async function CategoriesPage() {
 
   return <CategoryClient initialCategories={categories} />;
 }
+

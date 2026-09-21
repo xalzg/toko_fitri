@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getDashboardStats } from "@/app/actions/analytics";
 import DashboardClient from "./DashboardClient";
 
@@ -21,3 +22,4 @@ export default async function AdminDashboardPage() {
 
   return <DashboardClient initialData={initialData} />;
 }
+

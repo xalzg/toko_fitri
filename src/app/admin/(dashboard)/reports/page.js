@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getDashboardStats } from "@/app/actions/analytics";
 import ReportsClient from "./ReportsClient";
 
@@ -14,3 +15,4 @@ export default async function ReportsPage() {
 
   return <ReportsClient initialData={initialData} />;
 }
+
