@@ -1,0 +1,255 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  KASIR
+}
+
+model User {
+  id                 String              @id @default(cuid())
+  email              String              @unique
+  password           String
+  name               String?
+  role               Role                @default(KASIR)
+  deletedAt          DateTime?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  
+  purchases          Purchase[]
+  receivablePayments ReceivablePayment[]
+  expenses           Expense[]
+  shifts             Shift[]
+  auditLogs          AuditLog[]
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  products  Product[]
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id               String            @id @default(cuid())
+  sku              String?           @unique
+  barcode          String?           @unique
+  name             String
+  categoryId       String
+  category         Category          @relation(fields: [categoryId], references: [id])
+  purchasePrice    Float             @default(0)
+  sellingPrice     Float             @default(0)
+  stock            Int               @default(0)
+  unit             String            @default("pcs")
+  minimumStock     Int               @default(5)
+  isActive         Boolean           @default(true)
+  deletedAt        DateTime?
+  
+  stockMovements   StockMovement[]
+  transactionItems TransactionItem[]
+  purchaseItems    PurchaseItem[]
+  
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model Supplier {
+  id        String     @id @default(cuid())
+  name      String
+  phone     String?
+  address   String?    @db.Text
+  email     String?
+  notes     String?    @db.Text
+  isActive  Boolean    @default(true)
+  deletedAt DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  purchases Purchase[]
+}
+
+model Purchase {
+  id             String         @id @default(cuid())
+  purchaseNumber String         @unique
+  supplierId     String?
+  supplier       Supplier?      @relation(fields: [supplierId], references: [id])
+  userId         String
+  user           User           @relation(fields: [userId], references: [id])
+  purchaseDate   DateTime       @default(now())
+  subtotal       Float
+  discountAmount Float          @default(0)
+  totalAmount    Float
+  paymentStatus  String         @default("PAID") // PAID, UNPAID
+  notes          String?        @db.Text
+  items          PurchaseItem[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model PurchaseItem {
+  id            String   @id @default(cuid())
+  purchaseId    String
+  purchase      Purchase @relation(fields: [purchaseId], references: [id])
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  quantity      Int
+  purchasePrice Float
+  subtotal      Float
+}
+
+model Customer {
+  id                 String              @id @default(cuid())
+  name               String
+  phone              String?
+  address            String?             @db.Text
+  notes              String?             @db.Text
+  creditLimit        Float               @default(0)
+  currentDebt        Float               @default(0)
+  isActive           Boolean             @default(true)
+  deletedAt          DateTime?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  transactions       Transaction[]
+  receivablePayments ReceivablePayment[]
+}
+
+model ReceivablePayment {
+  id            String       @id @default(cuid())
+  customerId    String
+  customer      Customer     @relation(fields: [customerId], references: [id])
+  transactionId String?
+  transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  amount        Float
+  paymentMethod String       @default("CASH")
+  paymentDate   DateTime     @default(now())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id])
+  notes         String?      @db.Text
+  createdAt     DateTime     @default(now())
+}
+
+model StockMovement {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  userId        String?
+  type          String   // IN, OUT, ADJUSTMENT, SALE, RETURN, PURCHASE
+  quantity      Int
+  stockBefore   Int
+  stockAfter    Int
+  referenceType String?  // "TRANSACTION", "PURCHASE", "ADJUSTMENT"
+  referenceId   String?
+  note          String?  @db.Text
+  createdAt     DateTime @default(now())
+}
+
+model Shift {
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id])
+  openedAt       DateTime      @default(now())
+  closedAt       DateTime?
+  openingCash    Float
+  expectedCash   Float         @default(0)
+  actualCash     Float?
+  cashDifference Float?
+  status         String        @default("OPEN") // OPEN, CLOSED
+  notes          String?       @db.Text
+  transactions   Transaction[]
+}
+
+model Transaction {
+  id                String            @id @default(cuid())
+  transactionNumber String            @unique
+  customerId        String?
+  customer          Customer?         @relation(fields: [customerId], references: [id])
+  shiftId           String?
+  shift             Shift?            @relation(fields: [shiftId], references: [id])
+  transactionDate   DateTime          @default(now())
+  subtotal          Float
+  discountAmount    Float             @default(0)
+  taxAmount         Float             @default(0)
+  totalAmount       Float
+  paidAmount        Float             @default(0)
+  changeAmount      Float             @default(0)
+  paymentMethod     String            @default("CASH") // CASH, QRIS, KREDIT
+  status            String            @default("COMPLETED") // COMPLETED, VOID, REFUNDED
+  
+  items             TransactionItem[]
+  receivablePayments ReceivablePayment[]
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model TransactionItem {
+  id             String      @id @default(cuid())
+  transactionId  String
+  transaction    Transaction @relation(fields: [transactionId], references: [id])
+  productId      String
+  product        Product     @relation(fields: [productId], references: [id])
+  quantity       Int
+  purchasePrice  Float       @default(0)
+  sellingPrice   Float
+  discountAmount Float       @default(0)
+  subtotal       Float
+  createdAt      DateTime    @default(now())
+}
+
+model ExpenseCategory {
+  id          String    @id @default(cuid())
+  name        String
+  description String?   @db.Text
+  isActive    Boolean   @default(true)
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  expenses    Expense[]
+}
+
+model Expense {
+  id            String          @id @default(cuid())
+  categoryId    String
+  category      ExpenseCategory @relation(fields: [categoryId], references: [id])
+  userId        String
+  user          User            @relation(fields: [userId], references: [id])
+  amount        Float
+  expenseDate   DateTime        @default(now())
+  description   String?         @db.Text
+  paymentMethod String          @default("CASH")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  action     String
+  entityType String
+  entityId   String
+  oldValue   String?  @db.Text
+  newValue   String?  @db.Text
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+}
+
+model QrisSetting {
+  id           String   @id @default(cuid())
+  merchantName String
+  ownerName    String
+  imageUrl     String   @db.Text
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
